@@ -84,7 +84,6 @@ class Vel3dLWfp(SioMuleDataSetDriver):
                                    'Vel3dKWfpMetadataParticle']
             })
 
-            log.info('BUILDING PARSER Vel3dLWfpParser')
             parser = Vel3dLWfpParser(config, parser_state, file_handle,
                 lambda state, ingested:
                     self._save_parser_state(state, data_key, ingested),
@@ -102,7 +101,6 @@ class Vel3dLWfp(SioMuleDataSetDriver):
                                    'Vel3dLWfpSioMuleMetadataParticle']
             })
 
-            log.info('BUILDING PARSER Vel3dLWfpSioMuleParser')
             parser = Vel3dLWfpSioMuleParser(config, parser_state, file_handle,
                 lambda state:
                     self._save_parser_state(state, data_key),
@@ -124,14 +122,11 @@ class Vel3dLWfp(SioMuleDataSetDriver):
 
         harvesters = []    # list of harvesters to be returned
 
-        log.info('BUILD HARVESTER %s', self._harvester_config)
-
         #
         # Verify that the WFP harvester has been configured.
         # If so, build the harvester and add it to the list of harvesters.
         #
         if DataTypeKey.VEL3D_L_WFP in self._harvester_config:
-            log.info('BUILDING WFP HARVESTER')
             wfp_harvester = SingleDirectoryHarvester(
                 self._harvester_config.get(DataTypeKey.VEL3D_L_WFP),
                 driver_state[DataTypeKey.VEL3D_L_WFP],
@@ -143,14 +138,12 @@ class Vel3dLWfp(SioMuleDataSetDriver):
 
             if wfp_harvester is not None:
                 harvesters.append(wfp_harvester)
-                log.info('WFP HARVESTER BUILT')
 
         #
         # Verify that the SIO Mule harvester has been configured.
         # If so, build the harvester and add it to the list of harvesters.
         #
         if DataTypeKey.VEL3D_L_WFP_SIO_MULE in self._harvester_config:
-            log.info('BUILDING SIO HARVESTER')
             sio_harvester = SingleFileHarvester(
                 self._harvester_config.get(DataTypeKey.VEL3D_L_WFP_SIO_MULE),
                 driver_state[DataTypeKey.VEL3D_L_WFP_SIO_MULE],
@@ -160,8 +153,5 @@ class Vel3dLWfp(SioMuleDataSetDriver):
 
             if sio_harvester is not None:
                 harvesters.append(sio_harvester)
-                log.info('SIO HARVESTER BUILT')
-            else:
-                log.info('SIO HARVESTER NOT BUILT')
 
         return harvesters
