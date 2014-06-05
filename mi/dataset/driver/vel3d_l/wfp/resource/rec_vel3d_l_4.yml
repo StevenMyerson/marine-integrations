@@ -4,8 +4,8 @@ header:
 
 data:
   - _index: 1
-    particle_object: Vel3dLWfpInstrumentParticle
-    particle_type: vel3d_l_wfp_instrument
+    particle_object: Vel3dLWfpInstrumentRecoveredParticle
+    particle_type: vel3d_l_wfp_instrument_recovered
     vel3d_l_date_time_array: [2004, 1, 2, 1, 2, 3]
     internal_timestamp: 3281994123.0
     vel3d_l_heading: 101.0
@@ -19,16 +19,16 @@ data:
     vel3d_l_vp3: 30001.0
     vel3d_l_vp4: 40001.0
   - _index: 2
-    particle_object: Vel3dLWfpMetadataParticle
-    particle_type: vel3d_l_wfp_metadata
+    particle_object: Vel3dLWfpMetadataRecoveredParticle
+    particle_type: vel3d_l_wfp_metadata_recovered
     internal_timestamp: 3599815519.0
     vel3d_l_time_on: 1390820402
     vel3d_l_time_off: 1390826719
     vel3d_l_serial_number: 65535
     vel3d_l_number_of_records: 1
   - _index: 3
-    particle_object: Vel3dLWfpInstrumentParticle
-    particle_type: vel3d_l_wfp_instrument
+    particle_object: Vel3dLWfpInstrumentRecoveredParticle
+    particle_type: vel3d_l_wfp_instrument_recovered
     vel3d_l_date_time_array: [2004, 2, 3, 2, 3, 4]
     internal_timestamp: 3284762584.0
     vel3d_l_heading: 102.0
@@ -42,8 +42,8 @@ data:
     vel3d_l_vp3: 30002.0
     vel3d_l_vp4: 40002.0
   - _index: 4
-    particle_object: Vel3dLWfpInstrumentParticle
-    particle_type: vel3d_l_wfp_instrument
+    particle_object: Vel3dLWfpInstrumentRecoveredParticle
+    particle_type: vel3d_l_wfp_instrument_recovered
     vel3d_l_date_time_array: [2004, 3, 4, 3, 4, 5]
     internal_timestamp: 3287358245.0
     vel3d_l_heading: 103.0
@@ -57,16 +57,16 @@ data:
     vel3d_l_vp3: 30003.0
     vel3d_l_vp4: 40003.0
   - _index: 5
-    particle_object: Vel3dLWfpMetadataParticle
-    particle_type: vel3d_l_wfp_metadata
+    particle_object: Vel3dLWfpMetadataRecoveredParticle
+    particle_type: vel3d_l_wfp_metadata_recovered
     internal_timestamp: 3599815520.0
     vel3d_l_time_on: 1390820403
     vel3d_l_time_off: 1390826720
     vel3d_l_serial_number: 65535
     vel3d_l_number_of_records: 2
   - _index: 6
-    particle_object: Vel3dLWfpInstrumentParticle
-    particle_type: vel3d_l_wfp_instrument
+    particle_object: Vel3dLWfpInstrumentRecoveredParticle
+    particle_type: vel3d_l_wfp_instrument_recovered
     vel3d_l_date_time_array: [2004, 4, 5, 4, 5, 6]
     internal_timestamp: 3290126706.0
     vel3d_l_heading: 104.0
@@ -80,8 +80,8 @@ data:
     vel3d_l_vp3: 30004.0
     vel3d_l_vp4: 40004.0
   - _index: 7
-    particle_object: Vel3dLWfpInstrumentParticle
-    particle_type: vel3d_l_wfp_instrument
+    particle_object: Vel3dLWfpInstrumentRecoveredParticle
+    particle_type: vel3d_l_wfp_instrument_recovered
     vel3d_l_date_time_array: [2004, 5, 6, 5, 6, 7]
     internal_timestamp: 3292808767.0
     vel3d_l_heading: 105.0
@@ -95,8 +95,8 @@ data:
     vel3d_l_vp3: 30005.0
     vel3d_l_vp4: 40005.0
   - _index: 8
-    particle_object: Vel3dLWfpInstrumentParticle
-    particle_type: vel3d_l_wfp_instrument
+    particle_object: Vel3dLWfpInstrumentRecoveredParticle
+    particle_type: vel3d_l_wfp_instrument_recovered
     vel3d_l_date_time_array: [2004, 6, 7, 6, 7, 8]
     internal_timestamp: 3295577228.0
     vel3d_l_heading: 106.0
@@ -110,16 +110,16 @@ data:
     vel3d_l_vp3: 30006.0
     vel3d_l_vp4: 40006.0
   - _index: 9
-    particle_object: Vel3dLWfpMetadataParticle
-    particle_type: vel3d_l_wfp_metadata
+    particle_object: Vel3dLWfpMetadataRecoveredParticle
+    particle_type: vel3d_l_wfp_metadata_recovered
     internal_timestamp: 3599815521.0
     vel3d_l_time_on: 1390820404
     vel3d_l_time_off: 1390826721
     vel3d_l_serial_number: 65535
     vel3d_l_number_of_records: 3
   - _index: 10
-    particle_object: Vel3dLWfpInstrumentParticle
-    particle_type: vel3d_l_wfp_instrument
+    particle_object: Vel3dLWfpInstrumentRecoveredParticle
+    particle_type: vel3d_l_wfp_instrument_recovered
     vel3d_l_date_time_array: [2004, 7, 8, 7, 8, 9]
     internal_timestamp: 3298259289.0
     vel3d_l_heading: 107.0
@@ -133,8 +133,8 @@ data:
     vel3d_l_vp3: 30007.0
     vel3d_l_vp4: 40007.0
   - _index: 11
-    particle_object: Vel3dLWfpInstrumentParticle
-    particle_type: vel3d_l_wfp_instrument
+    particle_object: Vel3dLWfpInstrumentRecoveredParticle
+    particle_type: vel3d_l_wfp_instrument_recovered
     vel3d_l_date_time_array: [2004, 8, 9, 8, 9, 10]
     internal_timestamp: 3301027750.0
     vel3d_l_heading: 108.0
@@ -148,8 +148,8 @@ data:
     vel3d_l_vp3: 30008.0
     vel3d_l_vp4: 40008.0
   - _index: 12
-    particle_object: Vel3dLWfpInstrumentParticle
-    particle_type: vel3d_l_wfp_instrument
+    particle_object: Vel3dLWfpInstrumentRecoveredParticle
+    particle_type: vel3d_l_wfp_instrument_recovered
     vel3d_l_date_time_array: [2004, 9, 10, 9, 10, 11]
     internal_timestamp: 3303796211.0
     vel3d_l_heading: 109.0
@@ -163,8 +163,8 @@ data:
     vel3d_l_vp3: 30009.0
     vel3d_l_vp4: 40009.0
   - _index: 13
-    particle_object: Vel3dLWfpInstrumentParticle
-    particle_type: vel3d_l_wfp_instrument
+    particle_object: Vel3dLWfpInstrumentRecoveredParticle
+    particle_type: vel3d_l_wfp_instrument_recovered
     vel3d_l_date_time_array: [2004, 10, 11, 10, 11, 12]
     internal_timestamp: 3306478272.0
     vel3d_l_heading: 110.0
@@ -178,8 +178,8 @@ data:
     vel3d_l_vp3: 30010.0
     vel3d_l_vp4: 40010.0
   - _index: 14
-    particle_object: Vel3dLWfpMetadataParticle
-    particle_type: vel3d_l_wfp_metadata
+    particle_object: Vel3dLWfpMetadataRecoveredParticle
+    particle_type: vel3d_l_wfp_metadata_recovered
     internal_timestamp: 3599815522.0
     vel3d_l_time_on: 1390820405
     vel3d_l_time_off: 1390826722
