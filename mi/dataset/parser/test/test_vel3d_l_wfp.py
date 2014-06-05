@@ -11,7 +11,6 @@ from nose.plugins.attrib import attr
 
 from mi.core.log import get_logger; log = get_logger()
 from mi.core.exceptions import SampleException
-from mi.core.instrument.data_particle import DataParticleKey
 from StringIO import StringIO
 
 from mi.dataset.test.test_parser import ParserUnitTestCase
@@ -23,9 +22,9 @@ from mi.dataset.parser.vel3d_l_wfp import \
     Vel3dLWfpParser, \
     Vel3dLWfpSioMuleParser, \
     Vel3dLWfpInstrumentParticle, \
-    Vel3dLWfpMetadataParticle, \
+    Vel3dLWfpInstrumentRecoveredParticle, \
+    Vel3dLWfpMetadataRecoveredParticle, \
     Vel3dLWfpSioMuleMetadataParticle
-
 
 # Recovered Record #1 has 1 instrument record.
 REC_RECORD_1 = \
@@ -997,118 +996,118 @@ class Vel3dLWfpParserUnitTestCase(ParserUnitTestCase):
         This function creates the recovered data expected particle results.
         """
 
-        self.rec_expected_particle_1_1 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_1_1 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_1_1, internal_timestamp=3281994123.0)
 
-        self.rec_expected_particle_2_1 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_1 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_1, internal_timestamp=3284762584.0)
 
-        self.rec_expected_particle_2_2 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_2 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_2, internal_timestamp=3287358245.0)
 
-        self.rec_expected_particle_3_1 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_3_1 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_3_1, internal_timestamp=3290126706.0)
 
-        self.rec_expected_particle_3_2 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_3_2 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_3_2, internal_timestamp=3292808767.0)
 
-        self.rec_expected_particle_3_3 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_3_3 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_3_3, internal_timestamp=3295577228.0)
 
-        self.rec_expected_particle_4_1 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_4_1 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_4_1, internal_timestamp=3298259289.0)
 
-        self.rec_expected_particle_4_2 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_4_2 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_4_2, internal_timestamp=3301027750.0)
 
-        self.rec_expected_particle_4_3 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_4_3 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_4_3, internal_timestamp=3303796211.0)
 
-        self.rec_expected_particle_4_4 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_4_4 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_4_4, internal_timestamp=3306478272.0)
 
-        self.rec_expected_particle_1_meta = Vel3dLWfpMetadataParticle(
+        self.rec_expected_particle_1_meta = Vel3dLWfpMetadataRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_1_META, internal_timestamp=3599815519.0)
 
-        self.rec_expected_particle_2_meta = Vel3dLWfpMetadataParticle(
+        self.rec_expected_particle_2_meta = Vel3dLWfpMetadataRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_META, internal_timestamp=3583891131.0)
 
-        self.rec_expected_particle_3_meta = Vel3dLWfpMetadataParticle(
+        self.rec_expected_particle_3_meta = Vel3dLWfpMetadataRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_3_META, internal_timestamp=3599815521.0)
 
-        self.rec_expected_particle_4_meta = Vel3dLWfpMetadataParticle(
+        self.rec_expected_particle_4_meta = Vel3dLWfpMetadataRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_4_META, internal_timestamp=3599815522.0)
 
 
-        self.rec_expected_particle_10_1 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_10_1 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_1, internal_timestamp=3187386123.0)
 
-        self.rec_expected_particle_10_2 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_10_2 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_2, internal_timestamp=3190154584.0)
 
-        self.rec_expected_particle_10_3 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_10_3 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_3, internal_timestamp=3192663845.0)
 
-        self.rec_expected_particle_10_4 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_10_4 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_4, internal_timestamp=3195432306.0)
 
-        self.rec_expected_particle_10_5 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_10_5 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_5, internal_timestamp=3198114367.0)
 
-        self.rec_expected_particle_10_6 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_10_6 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_6, internal_timestamp=3200882828.0)
 
-        self.rec_expected_particle_10_7 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_10_7 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_7, internal_timestamp=3203564889.0)
 
-        self.rec_expected_particle_10_8 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_10_8 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_8, internal_timestamp=3206333350.0)
 
-        self.rec_expected_particle_10_9 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_10_9 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_9, internal_timestamp=3209101811.0)
 
-        self.rec_expected_particle_10_10 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_10_10 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_10, internal_timestamp=3211783872.0)
 
-        self.rec_expected_particle_10_meta = Vel3dLWfpMetadataParticle(
+        self.rec_expected_particle_10_meta = Vel3dLWfpMetadataRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_10_META, internal_timestamp=3599815519.0)
 
         
         # The following are for the multiple block file.
-        self.rec_expected_particle_2_10_1_1 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_10_1_1 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_1_1, internal_timestamp=3218922123.0)
         
-        self.rec_expected_particle_2_10_1_2 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_10_1_2 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_1_2, internal_timestamp=3221690584.0)
 
-        self.rec_expected_particle_2_10_1_3 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_10_1_3 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_1_3, internal_timestamp=3224199845.0)
 
-        self.rec_expected_particle_2_10_1_4 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_10_1_4 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_1_4, internal_timestamp=3226968306.0)
 
-        self.rec_expected_particle_2_10_2_1 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_10_2_1 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_2_1, internal_timestamp=3229650367.0)
 
-        self.rec_expected_particle_2_10_2_2 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_10_2_2 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_2_2, internal_timestamp=3232418828.0)
 
-        self.rec_expected_particle_2_10_2_3 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_10_2_3 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_2_3, internal_timestamp=3235100889.0)
 
-        self.rec_expected_particle_2_10_2_4 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_10_2_4 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_2_4, internal_timestamp=3237869350.0)
 
-        self.rec_expected_particle_2_10_2_5 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_10_2_5 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_2_5, internal_timestamp=3240637811.0)
 
-        self.rec_expected_particle_2_10_2_6 = Vel3dLWfpInstrumentParticle(
+        self.rec_expected_particle_2_10_2_6 = Vel3dLWfpInstrumentRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_2_6, internal_timestamp=3243319872.0)
 
-        self.rec_expected_particle_2_10_1_meta = Vel3dLWfpMetadataParticle(
+        self.rec_expected_particle_2_10_1_meta = Vel3dLWfpMetadataRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_1_META, internal_timestamp=3599815519.0)
 
-        self.rec_expected_particle_2_10_2_meta = Vel3dLWfpMetadataParticle(
+        self.rec_expected_particle_2_10_2_meta = Vel3dLWfpMetadataRecoveredParticle(
             REC_EXPECTED_FIELDS_RECORD_2_10_2_META, internal_timestamp=3599815520.0)
 
     def create_tel_expected_results(self):
@@ -1302,8 +1301,8 @@ class Vel3dLWfpParserUnitTestCase(ParserUnitTestCase):
             DataSetDriverConfigKeys.PARTICLE_MODULE:
                 'mi.dataset.parser.vel3d_l_wfp',
             DataSetDriverConfigKeys.PARTICLE_CLASS:
-                ['Vel3dLWfpInstrumentParticle',
-                 'Vel3dLWfpMetadataParticle']
+                ['Vel3dLWfpInstrumentRecoveredParticle',
+                 'Vel3dLWfpMetadataRecoveredParticle']
         }
 
         self.tel_config = {
@@ -1413,8 +1412,7 @@ class Vel3dLWfpParserUnitTestCase(ParserUnitTestCase):
         input_file = StringIO(REC_RECORD_2_10)
 
         # Skip past the first block.
-        new_state = {Vel3dLWfpStateKey.POSITION: 479,
-                     Vel3dLWfpStateKey.TIMESTAMP: 0.0}
+        new_state = {Vel3dLWfpStateKey.POSITION: 479}
         self.parser = self.create_rec_parser(input_file, new_state)
 
         log.info("REC MID STATE VERIFY BLOCK 2, RECORDS 1-6 and METADATA")
@@ -1477,8 +1475,7 @@ class Vel3dLWfpParserUnitTestCase(ParserUnitTestCase):
 
         # Skip past the other records in block 1.
         log.info("REC SET STATE RESET STATE")
-        new_state = {Vel3dLWfpStateKey.POSITION: 479,
-                     Vel3dLWfpStateKey.TIMESTAMP: 0.0}
+        new_state = {Vel3dLWfpStateKey.POSITION: 479}
         self.parser.set_state(new_state)
 
         log.info("REC SET STATE VERIFY BLOCK 2 ALL RECORDS")
