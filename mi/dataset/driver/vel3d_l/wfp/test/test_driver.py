@@ -52,7 +52,8 @@ from mi.dataset.parser.vel3d_l_wfp import \
     Vel3dLWfpDataParticleType, \
     Vel3dLWfpStateKey, \
     Vel3dLWfpInstrumentParticle, \
-    Vel3dLWfpMetadataParticle, \
+    Vel3dLWfpInstrumentRecoveredParticle, \
+    Vel3dLWfpMetadataRecoveredParticle, \
     Vel3dLWfpSioMuleMetadataParticle
 
 DIR_REC = '/tmp/dsatest_rec'
@@ -92,7 +93,7 @@ DataSetTestCase.initialize(
 
 PARSER_STATE = 'parser_state'
 
-REC_PARTICLES = (Vel3dLWfpInstrumentParticle, Vel3dLWfpMetadataParticle)
+REC_PARTICLES = (Vel3dLWfpInstrumentRecoveredParticle, Vel3dLWfpMetadataRecoveredParticle)
 TEL_PARTICLES = (Vel3dLWfpInstrumentParticle, Vel3dLWfpSioMuleMetadataParticle)
 
 # The integration and qualification tests generated here are suggested tests,
@@ -136,9 +137,6 @@ class IntegrationTest(DataSetIntegrationTestCase):
     def test_get_any_order(self):
         """
         Test that we can get data from files for all harvesters / parsers.
-        This isn't a good test since both parsers generate INSTRUMENT particle streams.
-        So all files processed by 1 harvester need to be handled before files
-        by the other harvester, or the INSTRUMENT particles will get interspersed.
         """
         log.info("=========== START INTEG TEST GET ANY ORDER  ================")
 
@@ -157,20 +155,20 @@ class IntegrationTest(DataSetIntegrationTestCase):
         log.info("=========== CREATE DATA FILES  ================")
         self.create_sample_data_set_dir('rec_vel3d_l_4.dat', DIR_REC, FILE_REC4)
         self.create_sample_data_set_dir('rec_vel3d_l_2.dat', DIR_REC, FILE_REC2)
+        self.create_sample_data_set_dir('tel_vel3d_l_1.dat', DIR_TEL, FILE_TEL)
 
         # Read files in the following order:
         # Entire recovered data file rec_vel3d_l_2.
-        # Entire recovered data file rec_vel3d_l_4.
         # Entire telemetered data file tel_vel3d_l_1.
+        # Entire recovered data file rec_vel3d_l_4.
         log.info("=========== READ RECOVERED DATA FILE #1  ================")
         self.assert_data(REC_PARTICLES, 'rec_vel3d_l_2.yml', count=12, timeout=12)
 
+        log.info("=========== READ TELEMETERED DATA FILE #1  ================")
+        self.assert_data(TEL_PARTICLES, 'tel_vel3d_l_1.yml', count=11, timeout=11)
+
         log.info("=========== READ RECOVERED DATA FILE #2  ================")
         self.assert_data(REC_PARTICLES, 'rec_vel3d_l_4.yml', count=14, timeout=14)
-
-        log.info("=========== READ TELEMETERED DATA FILE #1  ================")
-        self.create_sample_data_set_dir('tel_vel3d_l_1.dat', DIR_TEL, FILE_TEL)
-        self.assert_data(TEL_PARTICLES, 'tel_vel3d_l_1.yml', count=11, timeout=11)
 
         log.info("=========== END INTEG TEST GET ANY ORDER  ================")
 
@@ -192,74 +190,6 @@ class IntegrationTest(DataSetIntegrationTestCase):
 
         log.info("=========== END INTEG NON VEL3D_L SIO BLOCK  ================")
 
-    def test_stop_resume(self):
-        """
-        Test the ability to stop and restart the process
-        """
-        log.info("=========== START INTEG TEST STOP RESUME  ================")
-
-        self.clear_async_data()
-        path_1 = self.create_sample_data_set_dir('rec_vel3d_l_1.dat', DIR_REC, FILE_REC1)
-        path_2 = self.create_sample_data_set_dir('rec_vel3d_l_4.dat', DIR_REC, FILE_REC4)
-
-        # Recovered file 1 position set to EOF.
-        # Recovered file 2 position set to record 9 (start of group of 4 records).
-        pos_1 = 761
-        pos_2 = 1155    # 338 + 385 + 432
-
-        key_rec = DataTypeKey.VEL3D_L_WFP
-        key_tel = DataTypeKey.VEL3D_L_WFP_SIO_MULE
-
-        state = {
-            key_rec:
-                {FILE_REC1: self.get_file_state(path_1, True, pos_1),
-                 FILE_REC4: self.get_file_state(path_2, False, pos_2)},
-            key_tel:
-                {}
-        }
-
-        log.info("===== INTEG TEST STOP RESUME SET STATE TO %s =======", state)
-        self.driver = self._get_driver_object(memento=state)
-        self.driver.start_sampling()
-
-        log.info("=========== READ RECOVERED DATA FILE #2  ================")
-        self.assert_data(REC_PARTICLES, 'rec_vel3d_l_4_10-14.yml', count=5, timeout=10)
-
-        log.info("=========== END INTEG TEST STOP RESUME  ================")
-
-    def test_stop_start_resume(self):
-        """
-        Test the ability to stop and restart sampling, ingesting files in the
-        correct order
-        """
-        log.info("========== START INTEG TEST STOP START RESUME  ===============")
-        self.clear_async_data()
-
-        self.create_sample_data_set_dir('rec_vel3d_l_1.dat', DIR_REC, FILE_REC1)
-        self.create_sample_data_set_dir('rec_vel3d_l_2.dat', DIR_REC, FILE_REC2)
-
-        self.driver.start_sampling()
-
-        # Read all the records from rec_vel3d_l_1.dat.
-        log.info("=========== READ RECOVERED DATA FILE #1  ================")
-        self.assert_data(REC_PARTICLES, 'rec_vel3d_l_1.yml', count=11, timeout=11)
-        self.assert_file_ingested(FILE_REC1, DataTypeKey.VEL3D_L_WFP)
-
-        # Read 5 records (of 12) from rec_vel3d_l_2.dat.
-        log.info("=========== READ RECOVERED DATA FILE #2  ================")
-        self.assert_data(REC_PARTICLES, 'rec_vel3d_l_2_1-5.yml', count=5, timeout=5)
-
-        # Stop and then start sampling, resuming from where we left off.
-        self.driver.stop_sampling()
-        self.driver.start_sampling()
-
-        # Read the last 7 records (of 12) from rec_vel3d_l_2.dat.
-        log.info("=========== READ RECOVERED DATA FILE #2  ================")
-        self.assert_data(REC_PARTICLES, 'rec_vel3d_l_2_6-12.yml', count=7, timeout=7)
-        self.assert_file_ingested(FILE_REC2, DataTypeKey.VEL3D_L_WFP)
-
-        log.info("=========== END INTEG TEST STOP START RESUME  ================")
-
     def test_sample_exception(self):
         """
         Test a case that should produce a sample exception and confirm the
@@ -276,6 +206,89 @@ class IntegrationTest(DataSetIntegrationTestCase):
         self.assert_event('ResourceAgentErrorEvent')
 
         log.info("======== END INTEG TEST SAMPLE EXCEPTION FAMILY ==========")
+
+    def test_start_stop_resume(self):
+        """
+        Test the ability to stop and restart sampling, ingesting files in the
+        correct order
+        """
+        log.info("========== START INTEG TEST STOP START RESUME  ===============")
+        self.clear_async_data()
+
+        self.create_sample_data_set_dir('tel_vel3d_l_1.dat', DIR_TEL, FILE_TEL)
+        self.create_sample_data_set_dir('rec_vel3d_l_1.dat', DIR_REC, FILE_REC1)
+        self.create_sample_data_set_dir('rec_vel3d_l_2.dat', DIR_REC, FILE_REC2)
+
+        self.driver.start_sampling()
+
+        # Read all the records from rec_vel3d_l_1.dat.
+        log.info("=========== READ RECOVERED DATA FILE #1  ================")
+        self.assert_data(REC_PARTICLES, 'rec_vel3d_l_1.yml', count=11, timeout=10)
+        self.assert_file_ingested(FILE_REC1, DataTypeKey.VEL3D_L_WFP)
+
+        # Read 5 records (of 12) from rec_vel3d_l_2.dat.
+        log.info("=========== READ RECOVERED DATA FILE #2  ================")
+        self.assert_data(REC_PARTICLES, 'rec_vel3d_l_2_1-5.yml', count=5, timeout=10)
+
+        # Stop and then start sampling, resuming from where we left off.
+        self.driver.stop_sampling()
+        self.driver.start_sampling()
+
+        # Read all records from tel_vel3d_l_1.dat.
+        log.info("=========== READ TELEMETERED DATA FILE #1  ================")
+        self.assert_data(TEL_PARTICLES, 'tel_vel3d_l_1.yml', count=11, timeout=10)
+
+        # Read the last 7 records (of 12) from rec_vel3d_l_2.dat.
+        log.info("=========== READ RECOVERED DATA FILE #2 PART 2  ================")
+        self.assert_data(REC_PARTICLES, 'rec_vel3d_l_2_6-12.yml', count=7, timeout=10)
+        self.assert_file_ingested(FILE_REC2, DataTypeKey.VEL3D_L_WFP)
+
+        log.info("=========== END INTEG TEST STOP START RESUME  ================")
+
+    def test_stop_resume(self):
+        """
+        Test the ability to stop and restart the process
+        """
+        log.info("=========== START INTEG TEST STOP RESUME  ================")
+
+        self.clear_async_data()
+        path_1 = self.create_sample_data_set_dir('rec_vel3d_l_1.dat', DIR_REC, FILE_REC1)
+        path_2 = self.create_sample_data_set_dir('rec_vel3d_l_4.dat', DIR_REC, FILE_REC4)
+
+        # Recovered file 1 position set to EOF.
+        # Recovered file 2 position set to record 9 (start of group of 4 records).
+        pos_1 = 761
+        pos_2 = 1155    # 338 + 385 + 432
+
+        state = {
+            DataTypeKey.VEL3D_L_WFP:
+                {FILE_REC1: self.get_file_state(path_1, True, pos_1),
+                 FILE_REC4: self.get_file_state(path_2, False, pos_2)},
+            DataTypeKey.VEL3D_L_WFP_SIO_MULE:
+                {}
+        }
+
+        log.info("===== INTEG TEST STOP RESUME SET STATE TO %s =======", state)
+        self.driver = self._get_driver_object(memento=state)
+        self.driver.start_sampling()
+
+        log.info("====== INTEG TEST STOP RESUME READ RECOVERED DATA FILE #2 ========")
+        self.assert_data(REC_PARTICLES, 'rec_vel3d_l_4_10-14.yml', count=5, timeout=10)
+
+        # Read Telemetered file.
+        self.driver.stop_sampling()
+        self.create_sample_data_set_dir('tel_vel3d_l_1.dat', DIR_TEL, FILE_TEL)
+        self.driver.start_sampling()
+
+        log.info("====== INTEG TEST STOP RESUME READ TELEMETERED DATA FILE ========")
+        self.assert_data(TEL_PARTICLES, 'tel_vel3d_l_1_1-4.yml', count=4, timeout=11)
+
+        self.driver.stop_sampling()
+        self.driver.start_sampling()
+        self.assert_data(TEL_PARTICLES, 'tel_vel3d_l_1_5-11.yml', count=7, timeout=11)
+
+        log.info("=========== END INTEG TEST STOP RESUME  ================")
+
 
 ###############################################################################
 #                            QUALIFICATION TESTS                              #

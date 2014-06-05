@@ -37,7 +37,8 @@ from mi.dataset.parser.vel3d_l_wfp import \
     Vel3dLWfpParser, \
     Vel3dLWfpSioMuleParser, \
     Vel3dLWfpInstrumentParticle, \
-    Vel3dLWfpMetadataParticle, \
+    Vel3dLWfpInstrumentRecoveredParticle, \
+    Vel3dLWfpMetadataRecoveredParticle, \
     Vel3dLWfpSioMuleMetadataParticle
 
 
@@ -66,7 +67,8 @@ class Vel3dLWfp(SioMuleDataSetDriver):
     @classmethod
     def stream_config(cls):
         return [Vel3dLWfpInstrumentParticle.type(),
-                Vel3dLWfpMetadataParticle.type(),
+                Vel3dLWfpInstrumentRecoveredParticle.type(),
+                Vel3dLWfpMetadataRecoveredParticle.type(),
                 Vel3dLWfpSioMuleMetadataParticle.type()]
 
     def _build_parser(self, parser_state, file_handle, data_key=None):
@@ -80,8 +82,8 @@ class Vel3dLWfp(SioMuleDataSetDriver):
             config = self._parser_config
             config.update({
                 'particle_module': 'mi.dataset.parser.vel3d_l_wfp',
-                'particle_class': ['Vel3dKWfpInstrumentParticle',
-                                   'Vel3dKWfpMetadataParticle']
+                'particle_class': ['Vel3dKWfpInstrumentRecoveredParticle',
+                                   'Vel3dKWfpMetadataRecoveredParticle']
             })
 
             parser = Vel3dLWfpParser(config, parser_state, file_handle,
