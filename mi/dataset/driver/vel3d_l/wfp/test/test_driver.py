@@ -333,7 +333,7 @@ class QualificationTest(DataSetQualificationTestCase):
         try:
             # Verify that we get 10 instrument particles from the telemetered data file.
             samples = 10
-            particle = Vel3dLWfpDataParticleType.INSTRUMENT_PARTICLE
+            particle = Vel3dLWfpDataParticleType.SIO_INSTRUMENT_PARTICLE
             log.info("===== READ %d TELEMETERED INSTRUMENT PARTICLES =====", samples)
             result = self.data_subscribers.get_samples(particle, samples, 30)
 
@@ -361,7 +361,7 @@ class QualificationTest(DataSetQualificationTestCase):
         try:
             # Verify that we get 10 instrument particles from the recovered data file.
             samples = 10
-            particle = Vel3dLWfpDataParticleType.INSTRUMENT_PARTICLE
+            particle = Vel3dLWfpDataParticleType.WFP_INSTRUMENT_PARTICLE
             log.info("===== READ %d RECOVERED INSTRUMENT PARTICLES =====", samples)
             result = self.data_subscribers.get_samples(particle, samples, 30)
 
@@ -387,9 +387,9 @@ class QualificationTest(DataSetQualificationTestCase):
         """
         log.info("========= START QUAL TEST RECOVERED LARGE IMPORT ============")
 
-        # The recovered data file referenced in the IDD contains 1 data record
+        # The recovered data file referenced in the IDD has 1 data record
         # which contains 14124 instrument records and 1 metadata record.
-        self.create_sample_data_set_dir('A0000001.DAT', DIR_REC, 'A0000001.DAT')
+        self.create_sample_data_set_dir('A0000001.DAT', DIR_REC, FILE_REC1)
 
         self.assert_initialize(final_state=ResourceAgentState.COMMAND)
         self.assert_start_sampling()
@@ -397,7 +397,7 @@ class QualificationTest(DataSetQualificationTestCase):
         log.info("========== READING RECOVERED PARTICLES ==============")
         try:
             samples = 14124
-            particle = Vel3dLWfpDataParticleType.INSTRUMENT_PARTICLE
+            particle = Vel3dLWfpDataParticleType.WFP_INSTRUMENT_PARTICLE
             log.info("===== READ %d RECOVERED INSTRUMENT PARTICLES =====", samples)
             self.data_subscribers.get_samples(particle, samples, 1000)
 
@@ -419,18 +419,19 @@ class QualificationTest(DataSetQualificationTestCase):
         """
         log.info("========== START QUAL TEST SHUTDOWN RESTART ===============")
 
-        # This file has 2 sets of telemetered data.
+        # This Telemetered file has 2 sets of telemetered data.
         # First set has 4 instrument records and second set has 6.
         # 1 metadata record for each set.
         self.create_sample_data_set_dir('tel_vel3d_l_2.dat', DIR_TEL, FILE_TEL)
-        inst_particle = Vel3dLWfpDataParticleType.INSTRUMENT_PARTICLE
-        meta_particle = Vel3dLWfpDataParticleType.SIO_METADATA_PARTICLE
 
         self.assert_initialize(final_state=ResourceAgentState.COMMAND)
         log.info("========== START TELEMETERED SAMPLING  ===============")
         self.assert_start_sampling()
 
         try:
+            inst_particle = Vel3dLWfpDataParticleType.SIO_INSTRUMENT_PARTICLE
+            meta_particle = Vel3dLWfpDataParticleType.SIO_METADATA_PARTICLE
+
             # Verify that we get 4 instrument particles from the telemetered data file.
             samples = 4
             log.info("===== READ %d TELEMETERED INSTRUMENT PARTICLES =====", samples)
@@ -458,16 +459,16 @@ class QualificationTest(DataSetQualificationTestCase):
             # telemetered file and combine with the previous ones we read.
             log.info("========== RESTART TELEMETERED ===============")
             self.assert_start_sampling()
+
+            # Verify that we get 6 instrument particles from the telemetered data file.
             samples = 6
-            log.info("===== READ %d TELEMETERED INSTRUMENT PARTICLES (RESTART) =====",
-                     samples)
+            log.info("===== READ %d TELEMETERED INSTRUMENT PARTICLES =====", samples)
             inst_result = self.data_subscribers.get_samples(inst_particle, samples, 10)
             result.extend(inst_result)
 
             # Verify that we get 1 metadata particle from the telemetered data file.
             samples = 1
-            log.info("===== READ %d TELEMETERED METADATA PARTICLES (RESTART) =====",
-                     samples)
+            log.info("===== READ %d TELEMETERED METADATA PARTICLES =====", samples)
             meta_result = self.data_subscribers.get_samples(meta_particle, samples, 10)
 
             # Combine the instrument and metadata particles and verify results.
@@ -480,15 +481,18 @@ class QualificationTest(DataSetQualificationTestCase):
 
         self.assert_stop_sampling()
 
-        # This file has 2 sets of recovered data.
+        # This Recovered file has 2 sets of recovered data.
         # First set has 4 instrument records and second set has 6.
         # 1 metadata record for each set.
         self.create_sample_data_set_dir('rec_vel3d_l_2.dat', DIR_REC, FILE_REC2)
-        meta_particle = Vel3dLWfpDataParticleType.WFP_METADATA_PARTICLE
+
         log.info("========== START RECOVERED SAMPLING  ===============")
         self.assert_start_sampling()
 
         try:
+            inst_particle = Vel3dLWfpDataParticleType.WFP_INSTRUMENT_PARTICLE
+            meta_particle = Vel3dLWfpDataParticleType.WFP_METADATA_PARTICLE
+
             # Verify that we get 4 instrument particles from the recovered data file.
             samples = 4
             log.info("===== READ %d RECOVERED INSTRUMENT PARTICLES =====", samples)
@@ -516,16 +520,16 @@ class QualificationTest(DataSetQualificationTestCase):
             # file and combine with the previous ones we read.
             log.info("========== RESTART RECOVERED ===============")
             self.assert_start_sampling()
+
+            # Verify that we get 6 instrument particles from the recovered data file.
             samples = 6
-            log.info("===== READ %d RECOVERED INSTRUMENT PARTICLES (RESTART) =====",
-                     samples)
+            log.info("===== READ %d RECOVERED INSTRUMENT PARTICLES =====", samples)
             inst_result = self.data_subscribers.get_samples(inst_particle, samples, 10)
             result.extend(inst_result)
 
             # Verify that we get 1 metadata particle from the recovered data file.
             samples = 1
-            log.info("===== READ %d RECOVERED METADATA PARTICLES (RESTART) =====",
-                     samples)
+            log.info("===== READ %d RECOVERED METADATA PARTICLES =====", samples)
             meta_result = self.data_subscribers.get_samples(meta_particle, samples, 10)
 
             # Combine the instrument and metadata particles and verify results.
@@ -549,7 +553,7 @@ class QualificationTest(DataSetQualificationTestCase):
         # First set has 4 instrument records and second set has 6.
         # 1 metadata record for each set.
         self.create_sample_data_set_dir('rec_vel3d_l_2.dat', DIR_REC, FILE_REC2)
-        inst_particle = Vel3dLWfpDataParticleType.INSTRUMENT_PARTICLE
+        inst_particle = Vel3dLWfpDataParticleType.WFP_INSTRUMENT_PARTICLE
         meta_particle = Vel3dLWfpDataParticleType.WFP_METADATA_PARTICLE
 
         self.assert_initialize(final_state=ResourceAgentState.COMMAND)
@@ -605,6 +609,7 @@ class QualificationTest(DataSetQualificationTestCase):
         # First set has 4 instrument records and second set has 6.
         # 1 metadata record for each set.
         self.create_sample_data_set_dir('tel_vel3d_l_2.dat', DIR_TEL, FILE_TEL)
+        inst_particle = Vel3dLWfpDataParticleType.SIO_INSTRUMENT_PARTICLE
         meta_particle = Vel3dLWfpDataParticleType.SIO_METADATA_PARTICLE
         log.info("========== START TELEMETERED SAMPLING  ===============")
         self.assert_start_sampling()
@@ -669,7 +674,7 @@ class QualificationTest(DataSetQualificationTestCase):
         log.info("========== READING TELEMETERED PARTICLES ==============")
         try:
             samples = 16374
-            particle = Vel3dLWfpDataParticleType.INSTRUMENT_PARTICLE
+            particle = Vel3dLWfpDataParticleType.SIO_INSTRUMENT_PARTICLE
             log.info("===== READ %d TELEMETERED INSTRUMENT PARTICLES =====", samples)
             self.data_subscribers.get_samples(particle, samples, 1000)
 
@@ -684,3 +689,4 @@ class QualificationTest(DataSetQualificationTestCase):
 
         log.info("========= END QUAL TEST TELEMETERED LARGE IMPORT =============")
 
+ 
