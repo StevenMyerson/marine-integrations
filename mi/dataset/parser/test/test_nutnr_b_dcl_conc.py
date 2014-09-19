@@ -20,6 +20,10 @@ Filename             Blocks  Instrument Records
 19980401.nutnr98.log    1        20, metadata incomplete
 19970401.nutnr97.log    1        No valid records (various fields incorrect)
 
+Real file:
+20140430.nutnr.log has 8 NDC records and 56 NLC records.
+Should generate 8 metadata particles and 64 instrument particles.
+
 Each block produces 1 metadata particle unless there are no instrument records.
 Each instrument record produces 1 instrument particle.
 """
@@ -34,7 +38,11 @@ from mi.dataset.dataset_driver import DataSetDriverConfigKeys
 
 from mi.dataset.parser.nutnr_b_dcl_conc import \
     NutnrBDclConcRecoveredParser, \
-    NutnrBDclConcTelemeteredParser
+    NutnrBDclConcTelemeteredParser, \
+    NutnrBDclConcRecoveredInstrumentDataParticle, \
+    NutnrBDclConcTelemeteredInstrumentDataParticle, \
+    NutnrBDclConcRecoveredMetadataDataParticle, \
+    NutnrBDclConcTelemeteredMetadataDataParticle
 
 from mi.idk.config import Config
 
@@ -52,6 +60,7 @@ FILE6 = '20061225.nutnr6.log'
 FILE_INVALID_FRAME_TYPE = '19990401.nutnr99.log'
 FILE_MISSING_METADATA = '19980401.nutnr98.log'
 FILE_INVALID_FIELDS = '19970401.nutnr97.log'
+FILE_REAL = '20140430.nutnr.log'
 
 EXPECTED_PARTICLES1 = 0
 EXPECTED_PARTICLES2 = 26
@@ -59,6 +68,8 @@ EXPECTED_PARTICLES3 = 42
 EXPECTED_PARTICLES4 = 21
 EXPECTED_PARTICLES5 = 117
 EXPECTED_PARTICLES6 = 258
+EXPECTED_META_PARTICLES_REAL = 8
+EXPECTED_INST_PARTICLES_REAL = 64
 
 EXPECTED_PARTICLES_INVALID_FRAME_TYPE = 18
 EXPECTED_EXCEPTIONS_INVALID_FRAME_TYPE = 2
@@ -309,6 +320,58 @@ class NutnrBDclConcParserUnitTestCase(ParserUnitTestCase):
         parser = self.create_tel_parser(in_file)
         particles = parser.get_records(total_records)
         self.assertEqual(len(particles), expected_particles)
+        self.assertEqual(self.tel_exceptions_detected, 0)
+        in_file.close()
+
+        log.debug('===== END TEST NO PARTICLES =====')
+
+    def test_real_file(self):
+        """
+        Verify that the correct number of particles are generated
+        from a real file.
+        """
+        log.debug('===== START TEST NO PARTICLES =====')
+
+        input_file = FILE_REAL
+        expected_inst_particles = EXPECTED_INST_PARTICLES_REAL
+        expected_meta_particles = EXPECTED_META_PARTICLES_REAL
+        expected_particles = expected_meta_particles + expected_inst_particles
+
+        in_file = self.open_file(input_file)
+        parser = self.create_rec_parser(in_file)
+        particles = parser.get_records(expected_particles)
+        self.assertEqual(len(particles), expected_particles)
+
+        inst_particles = 0
+        meta_particles = 0
+        for particle in particles:
+            if isinstance(particle, NutnrBDclConcRecoveredInstrumentDataParticle):
+                inst_particles += 1
+            elif isinstance(particle, NutnrBDclConcRecoveredMetadataDataParticle):
+                meta_particles += 1
+
+        self.assertEqual(inst_particles, expected_inst_particles)
+        self.assertEqual(meta_particles, expected_meta_particles)
+
+        self.assertEqual(self.rec_exceptions_detected, 0)
+        in_file.close()
+
+        in_file = self.open_file(input_file)
+        parser = self.create_tel_parser(in_file)
+        particles = parser.get_records(expected_particles)
+        self.assertEqual(len(particles), expected_particles)
+
+        inst_particles = 0
+        meta_particles = 0
+        for particle in particles:
+            if isinstance(particle, NutnrBDclConcTelemeteredInstrumentDataParticle):
+                inst_particles += 1
+            elif isinstance(particle, NutnrBDclConcTelemeteredMetadataDataParticle):
+                meta_particles += 1
+
+        self.assertEqual(inst_particles, expected_inst_particles)
+        self.assertEqual(meta_particles, expected_meta_particles)
+        
         self.assertEqual(self.tel_exceptions_detected, 0)
         in_file.close()
 

@@ -114,9 +114,13 @@ LAMP_POWERED_TIME_REGEX += 'UV light source powered up.'
 LAMP_POWERED_TIME_REGEX += NEW_LINE
 LAMP_POWERED_TIME_MATCHER = re.compile(LAMP_POWERED_TIME_REGEX)
 
+# Filename can be any of the following formats:
+#   just_a_filename
+#   directory/filename       (unix style)
+#   directory\filename       (windows style)
 LOG_FILE_REGEX = META_MESSAGE_REGEX
 LOG_FILE_REGEX += "Data log file is '"
-LOG_FILE_REGEX += r'([\w/\.]+)'
+LOG_FILE_REGEX += r'([\w\.\\/]+)'    # This is the Filename
 LOG_FILE_REGEX += "'"
 LOG_FILE_REGEX += r'\.'
 LOG_FILE_REGEX += NEW_LINE
